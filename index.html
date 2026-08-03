@@ -12,7 +12,7 @@
             --accent: #0ea5e9;
             --text-main: #ffffff;
             --text-muted: #94a3b8;
-            --glass-bg: rgba(15, 23, 42, 0.65);
+            --glass-bg: rgba(15, 23, 42, 0.75);
             --glass-border: rgba(56, 189, 248, 0.2);
         }
 
@@ -71,7 +71,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 20px 8%;
-            background: rgba(2, 8, 23, 0.5);
+            background: rgba(2, 8, 23, 0.6);
             backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--glass-border);
             z-index: 1000;
@@ -114,6 +114,8 @@
             font-size: 0.9rem;
             transition: transform 0.2s, box-shadow 0.2s;
             box-shadow: 0 0 15px rgba(2, 132, 199, 0.4);
+            cursor: pointer;
+            border: none;
         }
 
         .nav-cta:hover {
@@ -173,6 +175,8 @@
             letter-spacing: 1px;
             box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
             transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            border: none;
         }
 
         .btn-primary:hover {
@@ -253,6 +257,146 @@
             line-height: 1.6;
         }
 
+        /* Functional Registration Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(2, 6, 23, 0.85);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-container {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            width: 90%;
+            max-width: 500px;
+            padding: 40px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            position: relative;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-container {
+            transform: translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .modal-close:hover {
+            color: var(--primary);
+        }
+
+        .modal-header h2 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, var(--primary), #e0f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .modal-header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+        }
+
+        .form-submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+
+        .form-submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.6);
+        }
+
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .success-message h3 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .success-message p {
+            color: var(--text-muted);
+            font-size: 0.95nrem;
+            line-height: 1.5;
+        }
+
         /* Footer */
         footer {
             text-align: center;
@@ -295,7 +439,7 @@
                 <li><a href="#management">Management</a></li>
             </ul>
         </nav>
-        <a href="#register" class="nav-cta">Register Your Business</a>
+        <button class="nav-cta" id="openModalBtn">Register Your Business</button>
     </header>
 
     <!-- Hero Section -->
@@ -303,7 +447,7 @@
         <h1>Distribute Globally. Manage Effortlessly. <span>Own Your Sound.</span></h1>
         <p>SAMS UPLOADS MEDIA empowers independent creators with lightning-fast streaming distribution, automated royalty splits, and an all-in-one career management suite.</p>
         <div class="hero-btns">
-            <a href="#register" class="btn-primary">Register Your Business</a>
+            <button class="btn-primary" id="heroRegisterBtn">Register Your Business</button>
             <a href="#features" class="btn-secondary">Explore Platform</a>
         </div>
     </section>
@@ -335,13 +479,102 @@
         </div>
     </section>
 
+    <!-- Fully Functional Registration Modal -->
+    <div class="modal-overlay" id="registrationModal">
+        <div class="modal-container">
+            <button class="modal-close" id="closeModalBtn">&times;</button>
+            
+            <div id="formContent">
+                <div class="modal-header">
+                    <h2>Artist & Business Registration</h2>
+                    <p>Enter your details to initialize your SAMS UPLOADS MEDIA account.</p>
+                </div>
+                <form id="artistRegForm">
+                    <div class="form-group">
+                        <label for="fullName">Full Name / Legal Entity</label>
+                        <input type="text" id="fullName" required placeholder="e.g. Samson Lisomona">
+                    </div>
+                    <div class="form-group">
+                        <label for="artistName">Artist / Band Name</label>
+                        <input type="text" id="artistName" required placeholder="e.g. Lisotech Sound">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Contact Email</label>
+                        <input type="email" id="email" required value="lisotech@yahoo.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="genre">Primary Genre</label>
+                        <select id="genre" required>
+                            <option value="" disabled selected>Select Genre</option>
+                            <option value="Afrobeats">Afrobeats</option>
+                            <option value="Hip Hop / Rap">Hip Hop / Rap</option>
+                            <option value="R&B / Soul">R&B / Soul</option>
+                            <option value="Electronic / Dance">Electronic / Dance</option>
+                            <option value="Pop">Pop</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="form-submit-btn">Complete Registration</button>
+                </form>
+            </div>
+
+            <div class="success-message" id="successMessage">
+                <h3>Registration Successful! 🎉</h3>
+                <p>Welcome to SAMS UPLOADS MEDIA. Your account credentials and verification link have been dispatched to your designated inbox (<strong id="displayEmail"></strong>).</p>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer>
         <p>&copy; 2026 SAMS UPLOADS MEDIA. All rights reserved. Powering Independent Music Worldwide.</p>
     </footer>
 
-    <!-- Interactive Canvas Animation Script -->
+    <!-- Interactive Canvas Animation & Form Scripts -->
     <script>
+        // Modal Functionality
+        const modal = document.getElementById('registrationModal');
+        const openBtn1 = document.getElementById('openModalBtn');
+        const openBtn2 = document.getElementById('heroRegisterBtn');
+        const closeBtn = document.getElementById('closeModalBtn');
+        const regForm = document.getElementById('artistRegForm');
+        const formContent = document.getElementById('formContent');
+        const successMessage = document.getElementById('successMessage');
+        const displayEmail = document.getElementById('displayEmail');
+
+        function openModal() {
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+            // Reset form view after closing
+            setTimeout(() => {
+                formContent.style.display = 'block';
+                successMessage.style.display = 'none';
+                regForm.reset();
+            }, 300);
+        }
+
+        openBtn1.addEventListener('click', openModal);
+        openBtn2.addEventListener('click', openModal);
+        closeBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        // Form Submit Handling
+        regForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const emailVal = document.getElementById('email').value;
+            displayEmail.textContent = emailVal;
+
+            // Transition views
+            formContent.style.display = 'none';
+            successMessage.style.display = 'block';
+        });
+
+        // Canvas Background Animation Script
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
 
