@@ -6,14 +6,14 @@
     <title>SAMS UPLOADS MEDIA | Global Music Distribution & Artist Management</title>
     <style>
         :root {
-            --bg-deep: #05050a;
-            --primary: #00f0ff;
-            --secondary: #7000ff;
-            --accent: #ff007f;
+            --bg-deep: #020817;
+            --primary: #38bdf8;
+            --secondary: #0284c7;
+            --accent: #0ea5e9;
             --text-main: #ffffff;
-            --text-muted: #a0a0c0;
-            --glass-bg: rgba(15, 15, 30, 0.65);
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-muted: #94a3b8;
+            --glass-bg: rgba(15, 23, 42, 0.65);
+            --glass-border: rgba(56, 189, 248, 0.2);
         }
 
         * {
@@ -32,7 +32,26 @@
             position: relative;
         }
 
-        /* Animated Canvas Background */
+        /* Animated Gradient Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: linear-gradient(125deg, #020617, #0f172a, #0369a1, #0284c7);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Animated Canvas Background (Blue Nodes) */
         #bg-canvas {
             position: fixed;
             top: 0;
@@ -40,7 +59,6 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            background: radial-gradient(circle at 50% 50%, #100720 0%, #05050a 100%);
         }
 
         /* Glassmorphism Navigation */
@@ -53,7 +71,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 20px 8%;
-            background: rgba(5, 5, 10, 0.5);
+            background: rgba(2, 8, 23, 0.5);
             backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--glass-border);
             z-index: 1000;
@@ -95,12 +113,12 @@
             font-weight: 600;
             font-size: 0.9rem;
             transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 0 15px rgba(112, 0, 255, 0.4);
+            box-shadow: 0 0 15px rgba(2, 132, 199, 0.4);
         }
 
         .nav-cta:hover {
             transform: translateY(-2px);
-            box-shadow: 0 0 25px rgba(255, 0, 127, 0.6);
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.6);
         }
 
         /* Hero Section */
@@ -126,7 +144,7 @@
         }
 
         .hero h1 span {
-            background: linear-gradient(135deg, var(--primary), var(--accent));
+            background: linear-gradient(135deg, var(--primary), #e0f2fe);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -153,13 +171,13 @@
             text-decoration: none;
             font-weight: 700;
             letter-spacing: 1px;
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
             transition: transform 0.2s, box-shadow 0.2s;
         }
 
         .btn-primary:hover {
             transform: scale(1.05);
-            box-shadow: 0 0 35px rgba(0, 240, 255, 0.6);
+            box-shadow: 0 0 35px rgba(56, 189, 248, 0.6);
         }
 
         .btn-secondary {
@@ -175,7 +193,7 @@
         }
 
         .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(56, 189, 248, 0.1);
             border-color: var(--primary);
         }
 
@@ -215,7 +233,7 @@
         .feature-card:hover {
             transform: translateY(-8px);
             border-color: var(--primary);
-            box-shadow: 0 10px 30px rgba(0, 240, 255, 0.15);
+            box-shadow: 0 10px 30px rgba(56, 189, 248, 0.2);
         }
 
         .feature-icon {
@@ -244,7 +262,7 @@
             font-size: 0.9rem;
             position: relative;
             z-index: 1;
-            background: rgba(5, 5, 10, 0.8);
+            background: rgba(2, 8, 23, 0.8);
         }
 
         /* Responsive */
@@ -259,6 +277,9 @@
     </style>
 </head>
 <body>
+
+    <!-- Animated Gradient Background Layer -->
+    <div class="animated-bg"></div>
 
     <!-- Dynamic Animated Particle & Wave Canvas Background -->
     <canvas id="bg-canvas"></canvas>
@@ -339,8 +360,8 @@
             constructor() {
                 this.x = Math.random() * width;
                 this.y = Math.random() * height;
-                this.vx = (Math.random() - 0.5) * 0.8;
-                this.vy = (Math.random() - 0.5) * 0.8;
+                this.vx = (Math.random() - 0.5) * 0.6;
+                this.vy = (Math.random() - 0.5) * 0.6;
                 this.radius = Math.random() * 2 + 1;
             }
 
@@ -355,7 +376,7 @@
             draw() {
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(0, 240, 255, 0.5)';
+                ctx.fillStyle = 'rgba(56, 189, 248, 0.6)';
                 ctx.fill();
             }
         }
@@ -388,7 +409,7 @@
                         ctx.beginPath();
                         ctx.moveTo(particles[i].x, particles[i].y);
                         ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.strokeStyle = `rgba(112, 0, 255, ${0.2 * (1 - dist / 120)})`;
+                        ctx.strokeStyle = `rgba(14, 165, 233, ${0.25 * (1 - dist / 120)})`;
                         ctx.lineWidth = 0.5;
                         ctx.stroke();
                     }
