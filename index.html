@@ -1264,8 +1264,8 @@
             }
         });
 
-        // Robust Google OAuth Client Authentication Handler
-        const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_OAUTH_CLIENT_ID.apps.googleusercontent.com";
+        // Robust Google OAuth Client Authentication Handler using your Client ID
+        const GOOGLE_CLIENT_ID = "163639365947-h93j17045e18sr6mn7a6297p0np964ee.apps.googleusercontent.com";
 
         function handleCredentialResponse(response) {
             try {
@@ -1315,14 +1315,9 @@
         };
 
         function triggerGoogleAuth() {
-            if (GOOGLE_CLIENT_ID.includes("YOUR_GOOGLE_OAUTH_CLIENT_ID")) {
-                alert("Please replace 'YOUR_GOOGLE_OAUTH_CLIENT_ID.apps.googleusercontent.com' with your actual Google Cloud Console Client ID to run live Google Authentication.");
-                return;
-            }
             if (typeof google !== 'undefined' && google.accounts && google.accounts.id) {
                 google.accounts.id.prompt((notification) => {
                     if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-                        // Fallback interactive popup trigger if One Tap is blocked
                         google.accounts.id.renderButton(
                             document.getElementById("googleButtonDiv"),
                             { theme: "outline", size: "large", width: "380" }
