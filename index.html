@@ -61,7 +61,7 @@
             z-index: -1;
         }
 
-        /* Glassmorphism Navigation (Reduced Header Height & Font Size 12px) */
+        /* Glassmorphism Navigation (Reduced Height & Font Size 12px) */
         header {
             position: fixed;
             top: 0;
@@ -79,6 +79,38 @@
             font-size: 12px;
         }
 
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Circled Logo */
+        .logo-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 12px rgba(56, 189, 248, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            flex-shrink: 0;
+        }
+
+        .logo-circle span {
+            font-size: 0.8rem;
+            font-weight: 900;
+            color: white;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-title-group {
+            display: flex;
+            flex-direction: column;
+        }
+
         .logo {
             font-size: 1rem;
             font-weight: 800;
@@ -86,6 +118,14 @@
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            line-height: 1.1;
+        }
+
+        .web-subtitle {
+            font-size: 9px;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
             text-transform: uppercase;
         }
 
@@ -442,9 +482,17 @@
     <!-- Dynamic Animated Particle & Wave Canvas Background -->
     <canvas id="bg-canvas"></canvas>
 
-    <!-- Navigation Bar (Reduced Height & Font Size 12px) -->
+    <!-- Navigation Bar (Reduced Height & Font Size 12px with Circled Logo & Web Title) -->
     <header>
-        <div class="logo">SAMS UPLOADS MEDIA</div>
+        <div class="header-brand">
+            <div class="logo-circle">
+                <span>SUM</span>
+            </div>
+            <div class="logo-title-group">
+                <div class="logo">SAMS UPLOADS MEDIA</div>
+                <div class="web-subtitle">Global Distribution & Management</div>
+            </div>
+        </div>
         <nav>
             <ul>
                 <li><a href="#features">Features</a></li>
@@ -455,7 +503,7 @@
         </nav>
     </header>
 
-    <!-- Hero Section (Sign In & Sign-Up Buttons Moved Here) -->
+    <!-- Hero Section (Sign In & Sign-Up Buttons) -->
     <section class="hero">
         <h1>Distribute Globally. Manage Effortlessly. <span>Own Your Sound.</span></h1>
         <p>SAMS UPLOADS MEDIA empowers independent creators with lightning-fast streaming distribution, automated royalty splits, and an all-in-one career management suite.</p>
