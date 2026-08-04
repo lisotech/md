@@ -61,7 +61,7 @@
             z-index: -1;
         }
 
-        /* Glassmorphism Navigation */
+        /* Glassmorphism Navigation (Small Head Height) */
         header {
             position: fixed;
             top: 0;
@@ -70,7 +70,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 8%;
+            padding: 10px 8%;
             background: rgba(2, 8, 23, 0.6);
             backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--glass-border);
@@ -78,7 +78,7 @@
         }
 
         .logo {
-            font-size: 1.5rem;
+            font-size: 12px;
             font-weight: 800;
             letter-spacing: 2px;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
@@ -90,13 +90,14 @@
         nav ul {
             display: flex;
             list-style: none;
-            gap: 30px;
+            gap: 25px;
             align-items: center;
         }
 
         nav ul li a {
             text-decoration: none;
             color: var(--text-muted);
+            font-size: 12px;
             font-weight: 500;
             transition: color 0.3s ease;
         }
@@ -107,7 +108,7 @@
 
         .nav-actions {
             display: flex;
-            gap: 15px;
+            gap: 12px;
             align-items: center;
         }
 
@@ -115,10 +116,10 @@
             background: transparent;
             border: 1px solid var(--glass-border);
             color: white;
-            padding: 9px 20px;
-            border-radius: 30px;
+            padding: 6px 16px;
+            border-radius: 20px;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 12px;
             cursor: pointer;
             transition: all 0.2s;
         }
@@ -131,11 +132,11 @@
         .nav-cta {
             background: linear-gradient(135deg, var(--secondary), var(--accent));
             color: white;
-            padding: 10px 22px;
-            border-radius: 30px;
+            padding: 6px 18px;
+            border-radius: 20px;
             text-decoration: none;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 12px;
             transition: transform 0.2s, box-shadow 0.2s;
             box-shadow: 0 0 15px rgba(2, 132, 199, 0.4);
             cursor: pointer;
@@ -466,7 +467,7 @@
                 display: none;
             }
             header {
-                padding: 20px 5%;
+                padding: 10px 5%;
             }
         }
     </style>
