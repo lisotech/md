@@ -124,46 +124,83 @@
             color: var(--text-muted);
             letter-spacing: 0.5px;
             font-weight: 500;
-            text-transform: uppercase;
         }
 
+        /* Desktop Nav - Hidden */
         nav ul {
-            display: flex;
-            list-style: none;
-            gap: 25px;
-            align-items: center;
+            display: none;
         }
 
-        nav ul li a {
+        /* Top-Right Sliding Dropdown Menu Component */
+        .menu-container {
+            position: relative;
+        }
+
+        .menu-toggle-btn {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-main);
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .menu-toggle-btn:hover {
+            border-color: var(--primary);
+            background: rgba(56, 189, 248, 0.1);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            min-width: 180px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(15px);
+            list-style: none;
+            overflow: hidden;
+            z-index: 1100;
+            
+            /* Sliding animation properties */
+            max-height: 0;
+            opacity: 0;
+            visibility: hidden;
+            transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease, visibility 0.35s ease;
+        }
+
+        .dropdown-menu.active {
+            max-height: 300px;
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .dropdown-menu li a {
+            display: block;
+            padding: 10px 16px;
             text-decoration: none;
             color: var(--text-muted);
-            font-weight: 500;
             font-size: 12px;
-            transition: color 0.3s ease;
+            font-weight: 500;
+            transition: background 0.2s, color 0.2s;
+            border-bottom: 1px solid rgba(56, 189, 248, 0.05);
         }
 
-        nav ul li a:hover {
+        .dropdown-menu li:last-child a {
+            border-bottom: none;
+        }
+
+        .dropdown-menu li a:hover {
+            background: rgba(56, 189, 248, 0.15);
             color: var(--primary);
-        }
-
-        /* Mobile Menu Toggle Button */
-        .menu-toggle {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 5px;
-            z-index: 1001;
-        }
-
-        .menu-toggle span {
-            width: 22px;
-            height: 2px;
-            background: var(--text-main);
-            border-radius: 2px;
-            transition: all 0.3s ease;
         }
 
         /* Hero Section */
@@ -481,34 +518,8 @@
             background: rgba(2, 8, 23, 0.8);
         }
 
-        /* Responsive Styles */
+        /* Responsive */
         @media(max-width: 768px) {
-            .menu-toggle {
-                display: flex;
-            }
-            nav {
-                position: absolute;
-                top: 100%;
-                left: 0;
-                width: 100%;
-                background: rgba(2, 8, 23, 0.95);
-                backdrop-filter: blur(15px);
-                border-bottom: 1px solid var(--glass-border);
-                transform: translateY(-150%);
-                opacity: 0;
-                visibility: hidden;
-                transition: all 0.3s ease;
-                padding: 20px 0;
-            }
-            nav.active {
-                transform: translateY(0);
-                opacity: 1;
-                visibility: visible;
-            }
-            nav ul {
-                flex-direction: column;
-                gap: 15px;
-            }
             header {
                 padding: 10px 5%;
             }
@@ -534,19 +545,19 @@
                 <div class="brand-subtitle">Global Distribution & Management</div>
             </div>
         </div>
-        <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-        <nav id="navMenu">
-            <ul>
-                <li><a href="#features">Features</a></li>
-                <li><a href="#distribution">Distribution</a></li>
-                <li><a href="#royalties">Royalties</a></li>
-                <li><a href="#management">Management</a></li>
+
+        <!-- Top-Right Sliding Symbol-Only Menu Component -->
+        <div class="menu-container">
+            <button class="menu-toggle-btn" id="menuToggleBtn" aria-label="Menu">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
+            <ul class="dropdown-menu" id="dropdownMenu">
+                <li><a href="#features" class="menu-option">Features</a></li>
+                <li><a href="#distribution" class="menu-option">Distribution</a></li>
+                <li><a href="#royalties" class="menu-option">Royalties</a></li>
+                <li><a href="#management" class="menu-option">Management</a></li>
             </ul>
-        </nav>
+        </div>
     </header>
 
     <!-- Hero Section -->
@@ -667,21 +678,30 @@
         <p>&copy; 2026 SAMS UPLOADS MEDIA. All rights reserved. Powering Independent Music Worldwide.</p>
     </footer>
 
-    <!-- Interactive Canvas Animation & Auth Scripts -->
+    <!-- Interactive Scripts -->
     <script>
-        // Mobile Menu Toggle
-        const menuToggle = document.getElementById('menuToggle');
-        const navMenu = document.getElementById('navMenu');
+        // Top-Right Sliding Menu Toggle and Autohide Functionality
+        const menuToggleBtn = document.getElementById('menuToggleBtn');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        const menuOptions = document.querySelectorAll('.menu-option');
 
-        menuToggle.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
+        menuToggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('active');
         });
 
-        // Close menu on link click
-        document.querySelectorAll('#navMenu a').forEach(link => {
-            link.addEventListener('click', () => {
-                navMenu.classList.remove('active');
+        // Hide menu smoothly after choosing an option
+        menuOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                dropdownMenu.classList.remove('active');
             });
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!menuToggleBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
+                dropdownMenu.classList.remove('active');
+            }
         });
 
         // Modal & Tab Elements
