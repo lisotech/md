@@ -579,6 +579,14 @@
             display: none;
         }
 
+        .form-success {
+            color: #86efac;
+            font-size: 0.85rem;
+            margin-top: 10px;
+            display: none;
+            text-align: center;
+        }
+
         .form-submit-btn {
             width: 100%;
             padding: 14px;
@@ -597,6 +605,90 @@
         .form-submit-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 0 30px rgba(56, 189, 248, 0.6);
+        }
+
+        /* Divider & Social Auth Buttons */
+        .auth-divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 20px 0;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .auth-divider::before, .auth-divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .auth-divider::before {
+            margin-right: 10px;
+        }
+
+        .auth-divider::after {
+            margin-left: 10px;
+        }
+
+        .google-auth-btn {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            color: white;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .google-auth-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--primary);
+        }
+
+        .google-auth-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .form-actions-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            font-size: 0.85rem;
+        }
+
+        .forgot-password-link {
+            color: var(--primary);
+            text-decoration: none;
+            transition: opacity 0.2s;
+            cursor: pointer;
+        }
+
+        .forgot-password-link:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
+        .back-to-signin {
+            color: var(--text-muted);
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 15px;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        .back-to-signin:hover {
+            color: var(--primary);
         }
 
         /* Footer */
@@ -731,12 +823,12 @@
         </div>
     </div>
 
-    <!-- Fully Functional Auth Modal (Sign In / Sign Up) -->
+    <!-- Fully Functional Auth Modal (Sign In / Sign Up / Forgot Password) -->
     <div class="modal-overlay" id="authModal">
         <div class="modal-container">
             <button class="modal-close" id="closeModalBtn">&times;</button>
             
-            <div class="modal-tabs">
+            <div class="modal-tabs" id="modalTabsContainer">
                 <button class="modal-tab active" id="tabSignin">Sign In</button>
                 <button class="modal-tab" id="tabSignup">Sign-Up</button>
             </div>
@@ -755,10 +847,20 @@
                     <div class="form-group">
                         <label for="signinPassword">Password</label>
                         <input type="password" id="signinPassword" required placeholder="••••••••">
+                        <div class="form-actions-row">
+                            <span class="forgot-password-link" id="forgotPasswordTrigger">Forgot password?</span>
+                        </div>
                     </div>
                     <div class="form-error" id="signinError">Invalid email or password. Please check your credentials or sign up.</div>
                     <button type="submit" class="form-submit-btn">Sign In to Dashboard</button>
                 </form>
+
+                <div class="auth-divider">or continue with</div>
+
+                <button type="button" class="google-auth-btn" id="googleSigninBtn">
+                    <svg viewBox="0 0 24 24"><path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.8 7.3l3.7 2.9C6.4 7.2 9 5 12 5z"/><path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z"/><path fill="#FBBC05" d="M5.5 14.8c-.2-.7-.4-1.5-.4-2.3s.2-1.6.4-2.3L1.8 7.3C.7 9.5 0 12 0 12s.7 2.5 1.8 4.7l3.7-2.9z"/><path fill="#34A853" d="M12 23c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.6-2.2-6.5-5.2L1.8 16c1.9 3.7 5.7 7 10.2 7z"/></svg>
+                    Sign in with Google
+                </button>
             </div>
 
             <!-- Sign Up Form Content -->
@@ -799,6 +901,33 @@
                     <div class="form-error" id="signupError">This email is already registered. Please sign in instead.</div>
                     <button type="submit" class="form-submit-btn">Complete Sign-Up & Login</button>
                 </form>
+
+                <div class="auth-divider">or continue with</div>
+
+                <button type="button" class="google-auth-btn" id="googleSignupBtn">
+                    <svg viewBox="0 0 24 24"><path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.8 7.3l3.7 2.9C6.4 7.2 9 5 12 5z"/><path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z"/><path fill="#FBBC05" d="M5.5 14.8c-.2-.7-.4-1.5-.4-2.3s.2-1.6.4-2.3L1.8 7.3C.7 9.5 0 12 0 12s.7 2.5 1.8 4.7l3.7-2.9z"/><path fill="#34A853" d="M12 23c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.6-2.2-6.5-5.2L1.8 16c1.9 3.7 5.7 7 10.2 7z"/></svg>
+                    Sign up with Google
+                </button>
+            </div>
+
+            <!-- Forgot Password Content -->
+            <div id="forgotContent" style="display: none;">
+                <div class="modal-header">
+                    <h2>Reset Password</h2>
+                    <p>Enter your account email to receive a password recovery link.</p>
+                </div>
+                <form id="forgotForm">
+                    <div class="form-group">
+                        <label for="forgotEmail">Email Address</label>
+                        <input type="email" id="forgotEmail" required value="lisotech@yahoo.com" placeholder="Enter your email">
+                    </div>
+                    <div class="form-error" id="forgotError">Email not found in our records. Please check or sign up.</div>
+                    <div class="form-success" id="forgotSuccess">Recovery link successfully dispatched to your email!</div>
+                    <button type="submit" class="form-submit-btn">Send Recovery Link</button>
+                </form>
+                <div style="text-align: center;">
+                    <span class="back-to-signin" id="backToSigninBtn">&larr; Back to Sign In</span>
+                </div>
             </div>
         </div>
     </div>
@@ -857,15 +986,26 @@
         const heroSignupBtn = document.getElementById('heroSignupBtn');
         const closeModalBtn = document.getElementById('closeModalBtn');
         
+        const modalTabsContainer = document.getElementById('modalTabsContainer');
         const tabSignin = document.getElementById('tabSignin');
         const tabSignup = document.getElementById('tabSignup');
         const signinContent = document.getElementById('signinContent');
         const signupContent = document.getElementById('signupContent');
+        const forgotContent = document.getElementById('forgotContent');
         
         const signinForm = document.getElementById('signinForm');
         const signupForm = document.getElementById('signupForm');
+        const forgotForm = document.getElementById('forgotForm');
+        
         const signinError = document.getElementById('signinError');
         const signupError = document.getElementById('signupError');
+        const forgotError = document.getElementById('forgotError');
+        const forgotSuccess = document.getElementById('forgotSuccess');
+        
+        const forgotPasswordTrigger = document.getElementById('forgotPasswordTrigger');
+        const backToSigninBtn = document.getElementById('backToSigninBtn');
+        const googleSigninBtn = document.getElementById('googleSigninBtn');
+        const googleSignupBtn = document.getElementById('googleSignupBtn');
 
         // Local Storage User Database Simulation
         function getUsers() {
@@ -887,28 +1027,40 @@
         function closeModal() {
             modal.classList.remove('active');
             setTimeout(() => {
-                signinContent.style.display = 'block';
-                signupContent.style.display = 'none';
+                switchTab('signin');
                 signinForm.reset();
                 signupForm.reset();
+                forgotForm.reset();
                 signinError.style.display = 'none';
                 signupError.style.display = 'none';
+                forgotError.style.display = 'none';
+                forgotSuccess.style.display = 'none';
             }, 300);
         }
 
         function switchTab(mode) {
             signinError.style.display = 'none';
             signupError.style.display = 'none';
+            forgotError.style.display = 'none';
+            forgotSuccess.style.display = 'none';
+
+            // Reset visibility
+            signinContent.style.display = 'none';
+            signupContent.style.display = 'none';
+            forgotContent.style.display = 'none';
+            modalTabsContainer.style.display = 'flex';
+
             if (mode === 'signin') {
                 tabSignin.classList.add('active');
                 tabSignup.classList.remove('active');
                 signinContent.style.display = 'block';
-                signupContent.style.display = 'none';
-            } else {
+            } else if (mode === 'signup') {
                 tabSignup.classList.add('active');
                 tabSignin.classList.remove('active');
                 signupContent.style.display = 'block';
-                signinContent.style.display = 'none';
+            } else if (mode === 'forgot') {
+                modalTabsContainer.style.display = 'none';
+                forgotContent.style.display = 'block';
             }
         }
 
@@ -918,6 +1070,8 @@
         
         tabSignin.addEventListener('click', () => switchTab('signin'));
         tabSignup.addEventListener('click', () => switchTab('signup'));
+        forgotPasswordTrigger.addEventListener('click', () => switchTab('forgot'));
+        backToSigninBtn.addEventListener('click', () => switchTab('signin'));
 
         modal.addEventListener('click', (e) => {
             if (e.target === modal) closeModal();
@@ -966,6 +1120,43 @@
                 switchView('dashboard');
             }
         });
+
+        // Forgot Password Form Handler
+        forgotForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('forgotEmail').value.trim();
+            const users = getUsers();
+            const foundUser = users.find(u => u.email.toLowerCase() === email.toLowerCase());
+
+            if (foundUser || email) {
+                forgotError.style.display = 'none';
+                forgotSuccess.style.display = 'block';
+            } else {
+                forgotSuccess.style.display = 'none';
+                forgotError.style.display = 'block';
+            }
+        });
+
+        // Google Authentication Simulation Handler
+        function handleGoogleAuth() {
+            const googleEmail = "lisotech@yahoo.com";
+            const users = getUsers();
+            let foundUser = users.find(u => u.email.toLowerCase() === googleEmail.toLowerCase());
+
+            if (!foundUser) {
+                foundUser = { name: 'Samson Lisomona', artist: 'Lisotech Sound', email: googleEmail, password: 'google_oauth_secure' };
+                users.push(foundUser);
+                saveUsers(users);
+            }
+
+            userNameDisplay.textContent = foundUser.artist || foundUser.name;
+            userEmailDisplay.textContent = foundUser.email;
+            closeModal();
+            switchView('dashboard');
+        }
+
+        googleSigninBtn.addEventListener('click', handleGoogleAuth);
+        googleSignupBtn.addEventListener('click', handleGoogleAuth);
 
         // Logout Handler
         logoutBtn.addEventListener('click', () => {
