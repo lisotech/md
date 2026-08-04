@@ -71,7 +71,7 @@
             display: block;
         }
 
-        /* Glassmorphism Navigation (Reduced Height & Font Size 12px) */
+        /* Glassmorphism Navigation */
         header {
             position: fixed;
             top: 0;
@@ -174,8 +174,6 @@
             list-style: none;
             overflow: hidden;
             z-index: 1100;
-            
-            /* Sliding animation properties */
             max-height: 0;
             opacity: 0;
             visibility: hidden;
@@ -222,7 +220,7 @@
         }
 
         .hero h1 {
-            font-size: 12px;
+            font-size: clamp(2rem, 3.5vw, 3.2rem);
             font-weight: 900;
             line-height: 1.4;
             margin-bottom: 20px;
@@ -288,7 +286,7 @@
             border-color: var(--primary);
         }
 
-        /* Features Grid Section */
+        /* Features Section */
         .features {
             padding: 100px 8%;
             position: relative;
@@ -344,7 +342,7 @@
             line-height: 1.6;
         }
 
-        /* Dashboard / Next Page Styles */
+        /* Dashboard Styles */
         .dashboard-container {
             padding: 120px 8% 80px 8%;
             position: relative;
@@ -431,6 +429,7 @@
             padding: 35px;
             border-radius: 20px;
             backdrop-filter: blur(15px);
+            margin-bottom: 30px;
         }
 
         .dashboard-content-box h3 {
@@ -445,7 +444,35 @@
             margin-bottom: 20px;
         }
 
-        /* Functional Modal Styles */
+        /* Releases List table/grid styling */
+        .releases-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .release-item {
+            background: rgba(2, 6, 23, 0.6);
+            border: 1px solid var(--glass-border);
+            padding: 15px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .release-item h5 {
+            font-size: 1.05rem;
+            color: white;
+        }
+
+        .release-item span {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Modal Styles */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -479,6 +506,8 @@
             position: relative;
             transform: translateY(20px);
             transition: transform 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         .modal-overlay.active .modal-container {
@@ -501,7 +530,6 @@
             color: var(--primary);
         }
 
-        /* Modal Tabs */
         .modal-tabs {
             display: flex;
             gap: 10px;
@@ -609,7 +637,6 @@
             box-shadow: 0 0 30px rgba(56, 189, 248, 0.6);
         }
 
-        /* Divider & Social Auth Buttons */
         .auth-divider {
             display: flex;
             align-items: center;
@@ -660,7 +687,6 @@
             height: 18px;
         }
 
-        /* Hidden container to host Google's native rendered button */
         .google-btn-wrapper {
             width: 100%;
             display: flex;
@@ -677,32 +703,16 @@
             font-size: 0.85rem;
         }
 
-        .forgot-password-link {
+        .forgot-password-link, .back-to-signin {
             color: var(--primary);
             text-decoration: none;
-            transition: opacity 0.2s;
             cursor: pointer;
         }
 
-        .forgot-password-link:hover {
-            opacity: 0.8;
+        .forgot-password-link:hover, .back-to-signin:hover {
             text-decoration: underline;
         }
 
-        .back-to-signin {
-            color: var(--text-muted);
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 15px;
-            font-size: 0.85rem;
-            cursor: pointer;
-        }
-
-        .back-to-signin:hover {
-            color: var(--primary);
-        }
-
-        /* Footer */
         footer {
             text-align: center;
             padding: 40px 8%;
@@ -714,7 +724,6 @@
             background: rgba(2, 8, 23, 0.8);
         }
 
-        /* Responsive */
         @media(max-width: 768px) {
             header {
                 padding: 10px 5%;
@@ -724,17 +733,14 @@
 </head>
 <body>
 
-    <!-- Animated Gradient Background Layer -->
     <div class="animated-bg"></div>
-
-    <!-- Dynamic Animated Particle & Wave Canvas Background -->
     <canvas id="bg-canvas"></canvas>
 
     <!-- Navigation Bar -->
     <header>
         <div class="brand-container">
             <div class="logo-img-wrapper">
-                <img src="logo.png" alt="Sams Uploads Media Logo">
+                <img src="logo.png" alt="Logo">
             </div>
             <div class="brand-text">
                 <div class="logo">SAMS UPLOADS MEDIA</div>
@@ -742,7 +748,6 @@
             </div>
         </div>
 
-        <!-- Top-Right Sliding Symbol-Only Menu Component -->
         <div class="menu-container">
             <button class="menu-toggle-btn" id="menuToggleBtn" aria-label="Menu">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
@@ -758,7 +763,6 @@
 
     <!-- VIEW 1: HOME LANDING PAGE -->
     <div id="homeView" class="view-section active-view">
-        <!-- Hero Section -->
         <section class="hero">
             <h1>Distribute Globally. Manage Effortlessly. <span>Own Your Sound.</span></h1>
             <p>SAMS UPLOADS MEDIA empowers independent creators with lightning-fast streaming distribution, automated royalty splits, and an all-in-one career management suite.</p>
@@ -768,7 +772,6 @@
             </div>
         </section>
 
-        <!-- Features Section -->
         <section class="features" id="features">
             <h2 class="section-title">Built for the <span>Modern Artist</span></h2>
             <div class="grid-container">
@@ -796,13 +799,13 @@
         </section>
     </div>
 
-    <!-- VIEW 2: DASHBOARD / NEXT PAGE (Post-Login) -->
+    <!-- VIEW 2: DASHBOARD / NEXT PAGE -->
     <div id="dashboardView" class="view-section">
         <div class="dashboard-container">
             <div class="dashboard-header">
                 <div>
                     <h2>Artist Dashboard</h2>
-                    <p>Welcome back, <strong id="userNameDisplay">Creator</strong> (<span id="userEmailDisplay">creator@example.com</span>)</p>
+                    <p>Welcome back, <strong id="userNameDisplay">Creator</strong> (<span id="userEmailDisplay">client@example.com</span>)</p>
                 </div>
                 <button class="logout-btn" id="logoutBtn">Sign Out</button>
             </div>
@@ -810,11 +813,11 @@
             <div class="stats-grid">
                 <div class="stat-card">
                     <h4>Total Streams</h4>
-                    <div class="stat-value">142,850</div>
+                    <div class="stat-value" id="statStreams">142,850</div>
                 </div>
                 <div class="stat-card">
                     <h4>Active Releases</h4>
-                    <div class="stat-value">6 Albums / Singles</div>
+                    <div class="stat-value" id="statReleasesCount">6 Albums / Singles</div>
                 </div>
                 <div class="stat-card">
                     <h4>Available Royalties</h4>
@@ -829,12 +832,20 @@
             <div class="dashboard-content-box">
                 <h3>Quick Distribution Center</h3>
                 <p>Initialize a new release pipeline or manage your existing metadata across Spotify, Apple Music, and regional distribution networks instantly.</p>
-                <button class="btn-primary">Upload New Release</button>
+                <button class="btn-primary" id="openUploadModalBtn">Upload New Release</button>
+            </div>
+
+            <div class="dashboard-content-box">
+                <h3>Your Catalog & Releases</h3>
+                <p>Manage your submitted tracks, EPs, and full-length albums.</p>
+                <div class="releases-list" id="releasesContainer">
+                    <!-- Populated dynamically -->
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Fully Functional Auth Modal (Sign In / Sign Up / Forgot Password) -->
+    <!-- Auth Modal (Sign In / Sign Up / Forgot Password) -->
     <div class="modal-overlay" id="authModal">
         <div class="modal-container">
             <button class="modal-close" id="closeModalBtn">&times;</button>
@@ -844,7 +855,7 @@
                 <button class="modal-tab" id="tabSignup">Sign-Up</button>
             </div>
 
-            <!-- Sign In Form Content -->
+            <!-- Sign In Form -->
             <div id="signinContent">
                 <div class="modal-header">
                     <h2>Welcome Back</h2>
@@ -862,22 +873,20 @@
                             <span class="forgot-password-link" id="forgotPasswordTrigger">Forgot password?</span>
                         </div>
                     </div>
-                    <div class="form-error" id="signinError">Invalid email or password. Please check your credentials or sign up.</div>
+                    <div class="form-error" id="signinError">Invalid email or password. Please check credentials or sign up.</div>
                     <button type="submit" class="form-submit-btn">Sign In to Dashboard</button>
                 </form>
 
                 <div class="auth-divider">or continue with</div>
 
-                <!-- Custom Google Trigger Button -->
                 <button type="button" class="google-auth-btn" id="googleSigninBtn">
                     <svg viewBox="0 0 24 24"><path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.8 7.3l3.7 2.9C6.4 7.2 9 5 12 5z"/><path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z"/><path fill="#FBBC05" d="M5.5 14.8c-.2-.7-.4-1.5-.4-2.3s.2-1.6.4-2.3L1.8 7.3C.7 9.5 0 12 0 12s.7 2.5 1.8 4.7l3.7-2.9z"/><path fill="#34A853" d="M12 23c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.6-2.2-6.5-5.2L1.8 16c1.9 3.7 5.7 7 10.2 7z"/></svg>
                     Sign in with Google Account
                 </button>
-                <!-- Hidden Official Google Button Container for SDK Popup Account Selector -->
                 <div id="googleButtonDiv" class="google-btn-wrapper" style="display: none;"></div>
             </div>
 
-            <!-- Sign Up Form Content -->
+            <!-- Sign Up Form -->
             <div id="signupContent" style="display: none;">
                 <div class="modal-header">
                     <h2>Artist & Business Sign-Up</h2>
@@ -886,11 +895,11 @@
                 <form id="signupForm">
                     <div class="form-group">
                         <label for="fullName">Full Name / Legal Entity</label>
-                        <input type="text" id="fullName" required placeholder="e.g. Samson Lisomona">
+                        <input type="text" id="fullName" required placeholder="e.g. John Doe">
                     </div>
                     <div class="form-group">
                         <label for="artistName">Artist / Band Name</label>
-                        <input type="text" id="artistName" required placeholder="e.g. Lisotech Sound">
+                        <input type="text" id="artistName" required placeholder="e.g. SoundWave">
                     </div>
                     <div class="form-group">
                         <label for="signupEmail">Contact Email</label>
@@ -924,7 +933,7 @@
                 </button>
             </div>
 
-            <!-- Forgot Password Content -->
+            <!-- Forgot Password -->
             <div id="forgotContent" style="display: none;">
                 <div class="modal-header">
                     <h2>Reset Password</h2>
@@ -935,14 +944,49 @@
                         <label for="forgotEmail">Email Address</label>
                         <input type="email" id="forgotEmail" required placeholder="Enter your email">
                     </div>
-                    <div class="form-error" id="forgotError">Email not found in our records. Please check or sign up.</div>
-                    <div class="form-success" id="forgotSuccess">Recovery link successfully dispatched to your email!</div>
+                    <div class="form-error" id="forgotError">Email not found in records.</div>
+                    <div class="form-success" id="forgotSuccess">Recovery link dispatched successfully!</div>
                     <button type="submit" class="form-submit-btn">Send Recovery Link</button>
                 </form>
                 <div style="text-align: center;">
                     <span class="back-to-signin" id="backToSigninBtn">&larr; Back to Sign In</span>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Upload Release Modal -->
+    <div class="modal-overlay" id="uploadModal">
+        <div class="modal-container">
+            <button class="modal-close" id="closeUploadModalBtn">&times;</button>
+            <div class="modal-header">
+                <h2>Upload New Release</h2>
+                <p>Submit your single, EP, or album details for global store deployment.</p>
+            </div>
+            <form id="uploadReleaseForm">
+                <div class="form-group">
+                    <label for="releaseTitle">Release Title</label>
+                    <input type="text" id="releaseTitle" required placeholder="e.g. Summer Anthem">
+                </div>
+                <div class="form-group">
+                    <label for="releaseType">Release Type</label>
+                    <select id="releaseType" required>
+                        <option value="Single">Single</option>
+                        <option value="EP">EP</option>
+                        <option value="Album">Album</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="releaseGenre">Genre</label>
+                    <input type="text" id="releaseGenre" required placeholder="e.g. Afrobeats">
+                </div>
+                <div class="form-group">
+                    <label for="releaseDate">Release Date</label>
+                    <input type="date" id="releaseDate" required>
+                </div>
+                <div class="form-success" id="uploadSuccessMsg">Release submitted successfully and added to your catalog!</div>
+                <button type="submit" class="form-submit-btn">Deploy to Stores</button>
+            </form>
         </div>
     </div>
 
@@ -953,7 +997,6 @@
 
     <!-- Interactive Scripts -->
     <script>
-        // Top-Right Sliding Menu Toggle and Autohide Functionality
         const menuToggleBtn = document.getElementById('menuToggleBtn');
         const dropdownMenu = document.getElementById('dropdownMenu');
         const menuOptions = document.querySelectorAll('.menu-option');
@@ -975,18 +1018,20 @@
             }
         });
 
-        // View Switcher Elements
         const homeView = document.getElementById('homeView');
         const dashboardView = document.getElementById('dashboardView');
         const userNameDisplay = document.getElementById('userNameDisplay');
         const userEmailDisplay = document.getElementById('userEmailDisplay');
         const logoutBtn = document.getElementById('logoutBtn');
 
+        let currentUserEmail = null;
+
         function switchView(viewName) {
             if (viewName === 'dashboard') {
                 homeView.classList.remove('active-view');
                 dashboardView.classList.add('active-view');
                 window.scrollTo(0, 0);
+                loadUserCatalog();
             } else {
                 dashboardView.classList.remove('active-view');
                 homeView.classList.add('active-view');
@@ -994,7 +1039,6 @@
             }
         }
 
-        // Modal & Tab Elements
         const modal = document.getElementById('authModal');
         const heroSigninBtn = document.getElementById('heroSigninBtn');
         const heroSignupBtn = document.getElementById('heroSignupBtn');
@@ -1021,7 +1065,15 @@
         const googleSigninBtn = document.getElementById('googleSigninBtn');
         const googleSignupBtn = document.getElementById('googleSignupBtn');
 
-        // Local Storage User Database Simulation
+        // Upload Modal elements
+        const uploadModal = document.getElementById('uploadModal');
+        const openUploadModalBtn = document.getElementById('openUploadModalBtn');
+        const closeUploadModalBtn = document.getElementById('closeUploadModalBtn');
+        const uploadReleaseForm = document.getElementById('uploadReleaseForm');
+        const uploadSuccessMsg = document.getElementById('uploadSuccessMsg');
+        const releasesContainer = document.getElementById('releasesContainer');
+        const statReleasesCount = document.getElementById('statReleasesCount');
+
         function getUsers() {
             const users = localStorage.getItem('sams_users');
             return users ? JSON.parse(users) : [];
@@ -1029,6 +1081,37 @@
 
         function saveUsers(users) {
             localStorage.setItem('sams_users', JSON.stringify(users));
+        }
+
+        function getUserReleases(email) {
+            const allReleases = JSON.parse(localStorage.getItem('sams_releases') || '{}');
+            return allReleases[email] || [
+                { title: 'Global Awakening (EP)', type: 'EP', genre: 'Afrobeats', date: '2026-01-15' },
+                { title: 'Midnight City Lights', type: 'Single', genre: 'Electronic', date: '2026-03-10' }
+            ];
+        }
+
+        function saveUserReleases(email, releases) {
+            const allReleases = JSON.parse(localStorage.getItem('sams_releases') || '{}');
+            allReleases[email] = releases;
+            localStorage.setItem('sams_releases', JSON.stringify(allReleases));
+        }
+
+        function loadUserCatalog() {
+            if (!currentUserEmail) return;
+            const releases = getUserReleases(currentUserEmail);
+            releasesContainer.innerHTML = '';
+            releases.forEach(rel => {
+                const card = document.createElement('div');
+                card.className = 'release-item';
+                card.innerHTML = `
+                    <h5>${rel.title}</h5>
+                    <span>Type: ${rel.type} &bull; Genre: ${rel.genre}</span>
+                    <span>Released: ${rel.date}</span>
+                `;
+                releasesContainer.appendChild(card);
+            });
+            statReleasesCount.textContent = `${releases.length} Releases`;
         }
 
         function openModal(mode = 'signin') {
@@ -1056,7 +1139,6 @@
             forgotError.style.display = 'none';
             forgotSuccess.style.display = 'none';
 
-            // Reset visibility
             signinContent.style.display = 'none';
             signupContent.style.display = 'none';
             forgotContent.style.display = 'none';
@@ -1089,6 +1171,41 @@
             if (e.target === modal) closeModal();
         });
 
+        // Upload Modal Triggers
+        openUploadModalBtn.addEventListener('click', () => {
+            uploadSuccessMsg.style.display = 'none';
+            uploadReleaseForm.reset();
+            uploadModal.classList.add('active');
+        });
+
+        closeUploadModalBtn.addEventListener('click', () => {
+            uploadModal.classList.remove('active');
+        });
+
+        uploadModal.addEventListener('click', (e) => {
+            if (e.target === uploadModal) uploadModal.classList.remove('active');
+        });
+
+        // Handle Upload New Release Submission
+        uploadReleaseForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const title = document.getElementById('releaseTitle').value.trim();
+            const type = document.getElementById('releaseType').value;
+            const genre = document.getElementById('releaseGenre').value.trim();
+            const date = document.getElementById('releaseDate').value;
+
+            if (currentUserEmail) {
+                const releases = getUserReleases(currentUserEmail);
+                releases.unshift({ title, type, genre, date });
+                saveUserReleases(currentUserEmail, releases);
+                loadUserCatalog();
+                uploadSuccessMsg.style.display = 'block';
+                setTimeout(() => {
+                    uploadModal.classList.remove('active');
+                }, 1200);
+            }
+        });
+
         // Sign In Form Submission Handler
         signinForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -1099,6 +1216,7 @@
             const foundUser = users.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === password);
 
             if (foundUser) {
+                currentUserEmail = foundUser.email;
                 userNameDisplay.textContent = foundUser.artist || foundUser.name;
                 userEmailDisplay.textContent = foundUser.email;
                 closeModal();
@@ -1126,6 +1244,7 @@
                 users.push(newUser);
                 saveUsers(users);
 
+                currentUserEmail = email;
                 userNameDisplay.textContent = artistName;
                 userEmailDisplay.textContent = email;
                 closeModal();
@@ -1133,7 +1252,6 @@
             }
         });
 
-        // Forgot Password Form Handler
         forgotForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const email = document.getElementById('forgotEmail').value.trim();
@@ -1149,10 +1267,9 @@
             }
         });
 
-        // Fully Functional Google Sign-In Integration using Google Identity Services (GIS)
+        // Google Sign-In & Sign-Up Integration Handler
         function handleCredentialResponse(response) {
             try {
-                // Decode the JWT token credential returned by Google
                 const base64Url = response.credential.split('.')[1];
                 const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
                 const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
@@ -1177,6 +1294,7 @@
                     saveUsers(users);
                 }
 
+                currentUserEmail = foundUser.email;
                 userNameDisplay.textContent = foundUser.artist || foundUser.name;
                 userEmailDisplay.textContent = foundUser.email;
                 closeModal();
@@ -1189,16 +1307,12 @@
         window.onload = function () {
             if (typeof google !== 'undefined' && google.accounts) {
                 google.accounts.id.initialize({
-                    // NOTE: Replace this placeholder with your actual Google Client ID from Google Cloud Console.
-                    // To prevent 'Access blocked: Authorization Error', ensure your deployment URL/domain 
-                    // is added under 'Authorized JavaScript origins' in your Google Cloud Console project.
                     client_id: "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com",
                     callback: handleCredentialResponse,
                     auto_select: false,
                     cancel_on_tap_outside: true
                 });
 
-                // Render the official native Google account selector button inside the hidden div container
                 google.accounts.id.renderButton(
                     document.getElementById("googleButtonDiv"),
                     { theme: "outline", size: "large", width: "380", text: "signin_with" }
@@ -1206,7 +1320,6 @@
             }
         };
 
-        // Custom buttons trigger the official Google account picker prompt window
         function triggerGooglePrompt() {
             if (typeof google !== 'undefined' && google.accounts && google.accounts.id) {
                 google.accounts.id.prompt((notification) => {
@@ -1215,7 +1328,7 @@
                         if (googleBtnIframe) {
                             document.getElementById("googleButtonDiv").click();
                         } else {
-                            alert("To avoid authorization errors, please configure a valid Google Client ID and whitelist your domain in the Google Cloud Console.");
+                            alert("To avoid authorization errors, please configure a valid Google Client ID and whitelist your domain inside the Google Cloud Console.");
                         }
                     }
                 });
@@ -1227,8 +1340,8 @@
         googleSigninBtn.addEventListener('click', triggerGooglePrompt);
         googleSignupBtn.addEventListener('click', triggerGooglePrompt);
 
-        // Logout Handler
         logoutBtn.addEventListener('click', () => {
+            currentUserEmail = null;
             switchView('home');
         });
 
