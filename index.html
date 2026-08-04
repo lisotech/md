@@ -1635,7 +1635,6 @@
 
         function getUserReleases(email) {
             const allTracks = getAllTracks();
-            // Filter by user email or fallback to sample
             return allTracks;
         }
 
@@ -1936,6 +1935,27 @@
             }, 1200);
         });
 
+        // Persistent Session Check & Authentication Handlers with localStorage
+        function handleSuccessfulAuth(user) {
+            currentUserEmail = user.email;
+            userNameDisplay.textContent = user.artist || user.name;
+            userEmailDisplay.textContent = user.email;
+            
+            // Save login state persistently across browser refreshes until explicit logout
+            localStorage.setItem('sams_isLoggedIn', 'true');
+            localStorage.setItem('sams_currentUserEmail', user.email);
+
+            closeModal();
+
+            if (user.role === 'admin') {
+                navAdminLink.style.display = 'block';
+                switchView('admin');
+            } else {
+                navAdminLink.style.display = 'none';
+                switchView('dashboard');
+            }
+        }
+
         // Sign In Form Submission Handler
         signinForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -1946,18 +1966,7 @@
             const foundUser = users.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === password);
 
             if (foundUser) {
-                currentUserEmail = foundUser.email;
-                userNameDisplay.textContent = foundUser.artist || foundUser.name;
-                userEmailDisplay.textContent = foundUser.email;
-                closeModal();
-
-                if (foundUser.role === 'admin') {
-                    navAdminLink.style.display = 'block';
-                    switchView('admin');
-                } else {
-                    navAdminLink.style.display = 'none';
-                    switchView('dashboard');
-                }
+                handleSuccessfulAuth(foundUser);
             } else {
                 signinError.style.display = 'block';
             }
@@ -1981,12 +1990,7 @@
                 users.push(newUser);
                 saveUsers(users);
 
-                currentUserEmail = email;
-                userNameDisplay.textContent = artistName;
-                userEmailDisplay.textContent = email;
-                navAdminLink.style.display = 'none';
-                closeModal();
-                switchView('dashboard');
+                handleSuccessfulAuth(newUser);
             }
         });
 
@@ -2035,12 +2039,7 @@
                     saveUsers(users);
                 }
 
-                currentUserEmail = foundUser.email;
-                userNameDisplay.textContent = foundUser.artist || foundUser.name;
-                userEmailDisplay.textContent = foundUser.email;
-                navAdminLink.style.display = foundUser.role === 'admin' ? 'block' : 'none';
-                closeModal();
-                switchView(foundUser.role === 'admin' ? 'admin' : 'dashboard');
+                handleSuccessfulAuth(foundUser);
             } catch (err) {
                 console.error("Google authentication token parsing failed:", err);
             }
@@ -2055,6 +2054,28 @@
                     cancel_on_tap_outside: true
                 });
             }
+
+            // Check if user session should remain active across browser refreshes
+            const isLoggedIn = localStorage.getItem('sams_isLoggedIn');
+            const savedEmail = localStorage.getItem('sams_currentUserEmail');
+
+            if (isLoggedIn === 'true' && savedEmail) {
+                const users = getUsers();
+                const foundUser = users.find(u => u.email.toLowerCase() === savedEmail.toLowerCase());
+                if (foundUser) {
+                    currentUserEmail = foundUser.email;
+                    userNameDisplay.textContent = foundUser.artist || foundUser.name;
+                    userEmailDisplay.textContent = foundUser.email;
+                    if (foundUser.role === 'admin') {
+                        navAdminLink.style.display = 'block';
+                        switchView('admin');
+                    } else {
+                        navAdminLink.style.display = 'none';
+                        switchView('dashboard');
+                    }
+                }
+            }
+
             renderDiscoveryTracks();
         };
 
@@ -2076,17 +2097,17 @@
         googleSigninBtn.addEventListener('click', triggerGoogleAuth);
         googleSignupBtn.addEventListener('click', triggerGoogleAuth);
 
-        logoutBtn.addEventListener('click', () => {
+        function handleExplicitLogout() {
+            // Clear persistent session storage upon explicit logout
+            localStorage.removeItem('sams_isLoggedIn');
+            localStorage.removeItem('sams_currentUserEmail');
             currentUserEmail = null;
             navAdminLink.style.display = 'none';
             switchView('home');
-        });
+        }
 
-        adminLogoutBtn.addEventListener('click', () => {
-            currentUserEmail = null;
-            navAdminLink.style.display = 'none';
-            switchView('home');
-        });
+        logoutBtn.addEventListener('click', handleExplicitLogout);
+        adminLogoutBtn.addEventListener('click', handleExplicitLogout);
 
         // Canvas Background Animation Script
         const canvas = document.getElementById('bg-canvas');
