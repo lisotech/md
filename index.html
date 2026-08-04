@@ -61,7 +61,7 @@
             z-index: -1;
         }
 
-        /* Glassmorphism Navigation (Small Head Height) */
+        /* Glassmorphism Navigation (Reduced Header Height & Font Size 12px) */
         header {
             position: fixed;
             top: 0;
@@ -71,16 +71,18 @@
             justify-content: space-between;
             align-items: center;
             padding: 10px 8%;
+            min-height: 50px;
             background: rgba(2, 8, 23, 0.6);
             backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--glass-border);
             z-index: 1000;
+            font-size: 12px;
         }
 
         .logo {
-            font-size: 12px;
+            font-size: 1rem;
             font-weight: 800;
-            letter-spacing: 2px;
+            letter-spacing: 1.5px;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -97,55 +99,13 @@
         nav ul li a {
             text-decoration: none;
             color: var(--text-muted);
-            font-size: 12px;
             font-weight: 500;
+            font-size: 12px;
             transition: color 0.3s ease;
         }
 
         nav ul li a:hover {
             color: var(--primary);
-        }
-
-        .nav-actions {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-        }
-
-        .nav-signin-btn {
-            background: transparent;
-            border: 1px solid var(--glass-border);
-            color: white;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 12px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .nav-signin-btn:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-        }
-
-        .nav-cta {
-            background: linear-gradient(135deg, var(--secondary), var(--accent));
-            color: white;
-            padding: 6px 18px;
-            border-radius: 20px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 12px;
-            transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 0 15px rgba(2, 132, 199, 0.4);
-            cursor: pointer;
-            border: none;
-        }
-
-        .nav-cta:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 25px rgba(56, 189, 248, 0.6);
         }
 
         /* Hero Section */
@@ -188,6 +148,7 @@
             gap: 20px;
             flex-wrap: wrap;
             justify-content: center;
+            align-items: center;
         }
 
         .btn-primary {
@@ -219,6 +180,7 @@
             font-weight: 600;
             backdrop-filter: blur(10px);
             transition: background 0.2s, border-color 0.2s;
+            cursor: pointer;
         }
 
         .btn-secondary:hover {
@@ -480,7 +442,7 @@
     <!-- Dynamic Animated Particle & Wave Canvas Background -->
     <canvas id="bg-canvas"></canvas>
 
-    <!-- Navigation Bar -->
+    <!-- Navigation Bar (Reduced Height & Font Size 12px) -->
     <header>
         <div class="logo">SAMS UPLOADS MEDIA</div>
         <nav>
@@ -491,19 +453,15 @@
                 <li><a href="#management">Management</a></li>
             </ul>
         </nav>
-        <div class="nav-actions">
-            <button class="nav-signin-btn" id="openSigninBtn">Sign In</button>
-            <button class="nav-cta" id="openSignupBtn">Sign-Up</button>
-        </div>
     </header>
 
-    <!-- Hero Section -->
+    <!-- Hero Section (Sign In & Sign-Up Buttons Moved Here) -->
     <section class="hero">
         <h1>Distribute Globally. Manage Effortlessly. <span>Own Your Sound.</span></h1>
         <p>SAMS UPLOADS MEDIA empowers independent creators with lightning-fast streaming distribution, automated royalty splits, and an all-in-one career management suite.</p>
         <div class="hero-btns">
-            <button class="btn-primary" id="heroSignupBtn">Sign-Up Now</button>
-            <a href="#features" class="btn-secondary">Explore Platform</a>
+            <button class="btn-primary" id="heroSignupBtn">Sign-Up</button>
+            <button class="btn-secondary" id="heroSigninBtn">Sign In</button>
         </div>
     </section>
 
@@ -619,8 +577,7 @@
     <script>
         // Modal & Tab Elements
         const modal = document.getElementById('authModal');
-        const openSigninBtn = document.getElementById('openSigninBtn');
-        const openSignupBtn = document.getElementById('openSignupBtn');
+        const heroSigninBtn = document.getElementById('heroSigninBtn');
         const heroSignupBtn = document.getElementById('heroSignupBtn');
         const closeModalBtn = document.getElementById('closeModalBtn');
         
@@ -667,8 +624,7 @@
             }
         }
 
-        openSigninBtn.addEventListener('click', () => openModal('signin'));
-        openSignupBtn.addEventListener('click', () => openModal('signup'));
+        heroSigninBtn.addEventListener('click', () => openModal('signin'));
         heroSignupBtn.addEventListener('click', () => openModal('signup'));
         closeModalBtn.addEventListener('click', closeModal);
         
