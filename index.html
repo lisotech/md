@@ -444,7 +444,7 @@
             margin-bottom: 20px;
         }
 
-        /* Releases List table/grid styling */
+        /* Releases List grid styling */
         .releases-list {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -877,11 +877,11 @@
                     <button type="submit" class="form-submit-btn">Sign In to Dashboard</button>
                 </form>
 
-                <div class="auth-divider">or continue with</div>
+                <div class="auth-divider">or continue with OAuth client</div>
 
                 <button type="button" class="google-auth-btn" id="googleSigninBtn">
                     <svg viewBox="0 0 24 24"><path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.8 7.3l3.7 2.9C6.4 7.2 9 5 12 5z"/><path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z"/><path fill="#FBBC05" d="M5.5 14.8c-.2-.7-.4-1.5-.4-2.3s.2-1.6.4-2.3L1.8 7.3C.7 9.5 0 12 0 12s.7 2.5 1.8 4.7l3.7-2.9z"/><path fill="#34A853" d="M12 23c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.6-2.2-6.5-5.2L1.8 16c1.9 3.7 5.7 7 10.2 7z"/></svg>
-                    Sign in with Google Account
+                    Sign in with Google OAuth Client
                 </button>
                 <div id="googleButtonDiv" class="google-btn-wrapper" style="display: none;"></div>
             </div>
@@ -925,11 +925,11 @@
                     <button type="submit" class="form-submit-btn">Complete Sign-Up & Login</button>
                 </form>
 
-                <div class="auth-divider">or continue with</div>
+                <div class="auth-divider">or continue with OAuth client</div>
 
                 <button type="button" class="google-auth-btn" id="googleSignupBtn">
                     <svg viewBox="0 0 24 24"><path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.8 7.3l3.7 2.9C6.4 7.2 9 5 12 5z"/><path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z"/><path fill="#FBBC05" d="M5.5 14.8c-.2-.7-.4-1.5-.4-2.3s.2-1.6.4-2.3L1.8 7.3C.7 9.5 0 12 0 12s.7 2.5 1.8 4.7l3.7-2.9z"/><path fill="#34A853" d="M12 23c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.6-2.2-6.5-5.2L1.8 16c1.9 3.7 5.7 7 10.2 7z"/></svg>
-                    Sign up with Google Account
+                    Sign up with Google OAuth Client
                 </button>
             </div>
 
@@ -1267,7 +1267,7 @@
             }
         });
 
-        // Google Sign-In & Sign-Up Integration Handler
+        // Google OAuth Client Integration Handler
         function handleCredentialResponse(response) {
             try {
                 const base64Url = response.credential.split('.')[1];
@@ -1300,14 +1300,14 @@
                 closeModal();
                 switchView('dashboard');
             } catch (err) {
-                console.error("Google authentication processing failed:", err);
+                console.error("Google OAuth client processing failed:", err);
             }
         }
 
         window.onload = function () {
             if (typeof google !== 'undefined' && google.accounts) {
                 google.accounts.id.initialize({
-                    client_id: "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com",
+                    client_id: "YOUR_GOOGLE_OAUTH_CLIENT_ID.apps.googleusercontent.com",
                     callback: handleCredentialResponse,
                     auto_select: false,
                     cancel_on_tap_outside: true
@@ -1328,7 +1328,7 @@
                         if (googleBtnIframe) {
                             document.getElementById("googleButtonDiv").click();
                         } else {
-                            alert("To avoid authorization errors, please configure a valid Google Client ID and whitelist your domain inside the Google Cloud Console.");
+                            alert("To complete Google OAuth authentication, replace 'YOUR_GOOGLE_OAUTH_CLIENT_ID.apps.googleusercontent.com' with your actual Google Cloud Console Client ID.");
                         }
                     }
                 });
