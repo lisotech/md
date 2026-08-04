@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SAMS UPLOADS MEDIA | Global Music Distribution & Artist Management</title>
+    <!-- Load Google Identity Services SDK -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <style>
         :root {
             --bg-deep: #020817;
@@ -658,6 +660,15 @@
             height: 18px;
         }
 
+        /* Hidden container to host Google's native rendered button */
+        .google-btn-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
         .form-actions-row {
             display: flex;
             justify-content: space-between;
@@ -857,10 +868,13 @@
 
                 <div class="auth-divider">or continue with</div>
 
+                <!-- Custom Google Trigger Button -->
                 <button type="button" class="google-auth-btn" id="googleSigninBtn">
                     <svg viewBox="0 0 24 24"><path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.8 7.3l3.7 2.9C6.4 7.2 9 5 12 5z"/><path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z"/><path fill="#FBBC05" d="M5.5 14.8c-.2-.7-.4-1.5-.4-2.3s.2-1.6.4-2.3L1.8 7.3C.7 9.5 0 12 0 12s.7 2.5 1.8 4.7l3.7-2.9z"/><path fill="#34A853" d="M12 23c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.6-2.2-6.5-5.2L1.8 16c1.9 3.7 5.7 7 10.2 7z"/></svg>
-                    Sign in with Google
+                    Sign in with Google Account
                 </button>
+                <!-- Hidden Official Google Button Container for SDK Popup Account Selector -->
+                <div id="googleButtonDiv" class="google-btn-wrapper" style="display: none;"></div>
             </div>
 
             <!-- Sign Up Form Content -->
@@ -906,7 +920,7 @@
 
                 <button type="button" class="google-auth-btn" id="googleSignupBtn">
                     <svg viewBox="0 0 24 24"><path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.8 7.3l3.7 2.9C6.4 7.2 9 5 12 5z"/><path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z"/><path fill="#FBBC05" d="M5.5 14.8c-.2-.7-.4-1.5-.4-2.3s.2-1.6.4-2.3L1.8 7.3C.7 9.5 0 12 0 12s.7 2.5 1.8 4.7l3.7-2.9z"/><path fill="#34A853" d="M12 23c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.6-2.2-6.5-5.2L1.8 16c1.9 3.7 5.7 7 10.2 7z"/></svg>
-                    Sign up with Google
+                    Sign up with Google Account
                 </button>
             </div>
 
@@ -1137,26 +1151,83 @@
             }
         });
 
-        // Google Authentication Simulation Handler
-        function handleGoogleAuth() {
-            const googleEmail = "lisotech@yahoo.com";
-            const users = getUsers();
-            let foundUser = users.find(u => u.email.toLowerCase() === googleEmail.toLowerCase());
+        // Fully Functional Google Sign-In Integration using Google Identity Services (GIS)
+        function handleCredentialResponse(response) {
+            try {
+                // Decode the JWT token credential returned by Google
+                const base64Url = response.credential.split('.')[1];
+                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                }).join(''));
 
-            if (!foundUser) {
-                foundUser = { name: 'Samson Lisomona', artist: 'Lisotech Sound', email: googleEmail, password: 'google_oauth_secure' };
-                users.push(foundUser);
-                saveUsers(users);
+                const googleUser = JSON.parse(jsonPayload);
+                const email = googleUser.email;
+                const name = googleUser.name;
+
+                const users = getUsers();
+                let foundUser = users.find(u => u.email.toLowerCase() === email.toLowerCase());
+
+                if (!foundUser) {
+                    foundUser = { 
+                        name: name, 
+                        artist: name + ' Official', 
+                        email: email, 
+                        password: 'google_oauth_secure' 
+                    };
+                    users.push(foundUser);
+                    saveUsers(users);
+                }
+
+                userNameDisplay.textContent = foundUser.artist || foundUser.name;
+                userEmailDisplay.textContent = foundUser.email;
+                closeModal();
+                switchView('dashboard');
+            } catch (err) {
+                console.error("Google authentication processing failed:", err);
             }
-
-            userNameDisplay.textContent = foundUser.artist || foundUser.name;
-            userEmailDisplay.textContent = foundUser.email;
-            closeModal();
-            switchView('dashboard');
         }
 
-        googleSigninBtn.addEventListener('click', handleGoogleAuth);
-        googleSignupBtn.addEventListener('click', handleGoogleAuth);
+        window.onload = function () {
+            if (typeof google !== 'undefined' && google.accounts) {
+                google.accounts.id.initialize({
+                    // Replace client_id with your real Google Cloud Console Client ID when deploying live
+                    client_id: "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com",
+                    callback: handleCredentialResponse,
+                    auto_select: false,
+                    cancel_on_tap_outside: true
+                });
+
+                // Render the official native Google account selector button inside the hidden div container
+                google.accounts.id.renderButton(
+                    document.getElementById("googleButtonDiv"),
+                    { theme: "outline", size: "large", width: "380", text: "signin_with" }
+                );
+            }
+        };
+
+        // Custom buttons trigger the official Google account picker prompt window
+        function triggerGooglePrompt() {
+            if (typeof google !== 'undefined' && google.accounts && google.accounts.id) {
+                google.accounts.id.prompt((notification) => {
+                    if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+                        // Fallback if One Tap prompt is blocked by browser settings: trigger standard popup button click
+                        const googleBtnIframe = document.querySelector('#googleButtonDiv iframe');
+                        if (googleBtnIframe) {
+                            // Find clickable element inside rendered container
+                            document.getElementById("googleButtonDiv").click();
+                        } else {
+                            alert("Google sign-in popup blocked or requires a valid Client ID configuration in Google Cloud Console.");
+                        }
+                    }
+                });
+            } else {
+                alert("Google Identity Services script is still loading or unavailable.");
+            }
+        }
+
+        googleSigninBtn.addEventListener('click', triggerGooglePrompt);
+        googleSignupBtn.addEventListener('click', triggerGooglePrompt);
 
         // Logout Handler
         logoutBtn.addEventListener('click', () => {
