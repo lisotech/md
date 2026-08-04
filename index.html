@@ -802,7 +802,7 @@
             <div class="dashboard-header">
                 <div>
                     <h2>Artist Dashboard</h2>
-                    <p>Welcome back, <strong id="userNameDisplay">Creator</strong> (<span id="userEmailDisplay">lisotech@yahoo.com</span>)</p>
+                    <p>Welcome back, <strong id="userNameDisplay">Creator</strong> (<span id="userEmailDisplay">creator@example.com</span>)</p>
                 </div>
                 <button class="logout-btn" id="logoutBtn">Sign Out</button>
             </div>
@@ -853,7 +853,7 @@
                 <form id="signinForm">
                     <div class="form-group">
                         <label for="signinEmail">Email Address</label>
-                        <input type="email" id="signinEmail" required value="lisotech@yahoo.com" placeholder="Enter your email">
+                        <input type="email" id="signinEmail" required placeholder="Enter your email">
                     </div>
                     <div class="form-group">
                         <label for="signinPassword">Password</label>
@@ -894,7 +894,7 @@
                     </div>
                     <div class="form-group">
                         <label for="signupEmail">Contact Email</label>
-                        <input type="email" id="signupEmail" required value="lisotech@yahoo.com">
+                        <input type="email" id="signupEmail" required placeholder="Enter your email">
                     </div>
                     <div class="form-group">
                         <label for="genre">Primary Genre</label>
@@ -933,7 +933,7 @@
                 <form id="forgotForm">
                     <div class="form-group">
                         <label for="forgotEmail">Email Address</label>
-                        <input type="email" id="forgotEmail" required value="lisotech@yahoo.com" placeholder="Enter your email">
+                        <input type="email" id="forgotEmail" required placeholder="Enter your email">
                     </div>
                     <div class="form-error" id="forgotError">Email not found in our records. Please check or sign up.</div>
                     <div class="form-success" id="forgotSuccess">Recovery link successfully dispatched to your email!</div>
@@ -1024,9 +1024,7 @@
         // Local Storage User Database Simulation
         function getUsers() {
             const users = localStorage.getItem('sams_users');
-            return users ? JSON.parse(users) : [
-                { name: 'Samson Lisomona', artist: 'Lisotech Sound', email: 'lisotech@yahoo.com', password: 'password123' }
-            ];
+            return users ? JSON.parse(users) : [];
         }
 
         function saveUsers(users) {
@@ -1191,7 +1189,9 @@
         window.onload = function () {
             if (typeof google !== 'undefined' && google.accounts) {
                 google.accounts.id.initialize({
-                    // Replace client_id with your real Google Cloud Console Client ID when deploying live
+                    // NOTE: Replace this placeholder with your actual Google Client ID from Google Cloud Console.
+                    // To prevent 'Access blocked: Authorization Error', ensure your deployment URL/domain 
+                    // is added under 'Authorized JavaScript origins' in your Google Cloud Console project.
                     client_id: "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com",
                     callback: handleCredentialResponse,
                     auto_select: false,
@@ -1211,13 +1211,11 @@
             if (typeof google !== 'undefined' && google.accounts && google.accounts.id) {
                 google.accounts.id.prompt((notification) => {
                     if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-                        // Fallback if One Tap prompt is blocked by browser settings: trigger standard popup button click
                         const googleBtnIframe = document.querySelector('#googleButtonDiv iframe');
                         if (googleBtnIframe) {
-                            // Find clickable element inside rendered container
                             document.getElementById("googleButtonDiv").click();
                         } else {
-                            alert("Google sign-in popup blocked or requires a valid Client ID configuration in Google Cloud Console.");
+                            alert("To avoid authorization errors, please configure a valid Google Client ID and whitelist your domain in the Google Cloud Console.");
                         }
                     }
                 });
