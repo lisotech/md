@@ -91,6 +91,7 @@
             display: flex;
             list-style: none;
             gap: 30px;
+            align-items: center;
         }
 
         nav ul li a {
@@ -101,6 +102,29 @@
         }
 
         nav ul li a:hover {
+            color: var(--primary);
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .nav-signin-btn {
+            background: transparent;
+            border: 1px solid var(--glass-border);
+            color: white;
+            padding: 9px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .nav-signin-btn:hover {
+            border-color: var(--primary);
             color: var(--primary);
         }
 
@@ -257,7 +281,7 @@
             line-height: 1.6;
         }
 
-        /* Functional Registration Modal Styles */
+        /* Functional Modal Styles */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -313,8 +337,35 @@
             color: var(--primary);
         }
 
+        /* Modal Tabs */
+        .modal-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            border-bottom: 1px solid var(--glass-border);
+            padding-bottom: 15px;
+        }
+
+        .modal-tab {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            padding: 5px 15px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .modal-tab.active {
+            color: white;
+            background: rgba(56, 189, 248, 0.15);
+            border: 1px solid var(--glass-border);
+        }
+
         .modal-header h2 {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             font-weight: 800;
             margin-bottom: 8px;
             background: linear-gradient(135deg, var(--primary), #e0f2fe);
@@ -324,19 +375,19 @@
 
         .modal-header p {
             color: var(--text-muted);
-            font-size: 0.95rem;
-            margin-bottom: 25px;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         .form-group label {
             display: block;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 600;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             color: var(--text-muted);
             letter-spacing: 0.5px;
             text-transform: uppercase;
@@ -344,12 +395,12 @@
 
         .form-group input, .form-group select {
             width: 100%;
-            padding: 14px 18px;
+            padding: 12px 16px;
             background: rgba(15, 23, 42, 0.9);
             border: 1px solid var(--glass-border);
             border-radius: 12px;
             color: white;
-            font-size: 1rem;
+            font-size: 0.95rem;
             outline: none;
             transition: border-color 0.2s, box-shadow 0.2s;
         }
@@ -361,7 +412,7 @@
 
         .form-submit-btn {
             width: 100%;
-            padding: 15px;
+            padding: 14px;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
             border: none;
@@ -382,7 +433,7 @@
         .success-message {
             display: none;
             text-align: center;
-            padding: 20px 0;
+            padding: 30px 0;
         }
 
         .success-message h3 {
@@ -393,7 +444,7 @@
 
         .success-message p {
             color: var(--text-muted);
-            font-size: 0.95nrem;
+            font-size: 0.95rem;
             line-height: 1.5;
         }
 
@@ -439,7 +490,10 @@
                 <li><a href="#management">Management</a></li>
             </ul>
         </nav>
-        <button class="nav-cta" id="openModalBtn">Register Your Business</button>
+        <div class="nav-actions">
+            <button class="nav-signin-btn" id="openSigninBtn">Sign In</button>
+            <button class="nav-cta" id="openSignupBtn">Sign-Up</button>
+        </div>
     </header>
 
     <!-- Hero Section -->
@@ -447,7 +501,7 @@
         <h1>Distribute Globally. Manage Effortlessly. <span>Own Your Sound.</span></h1>
         <p>SAMS UPLOADS MEDIA empowers independent creators with lightning-fast streaming distribution, automated royalty splits, and an all-in-one career management suite.</p>
         <div class="hero-btns">
-            <button class="btn-primary" id="heroRegisterBtn">Register Your Business</button>
+            <button class="btn-primary" id="heroSignupBtn">Sign-Up Now</button>
             <a href="#features" class="btn-secondary">Explore Platform</a>
         </div>
     </section>
@@ -479,17 +533,42 @@
         </div>
     </section>
 
-    <!-- Fully Functional Registration Modal -->
-    <div class="modal-overlay" id="registrationModal">
+    <!-- Fully Functional Auth Modal (Sign In / Sign Up) -->
+    <div class="modal-overlay" id="authModal">
         <div class="modal-container">
             <button class="modal-close" id="closeModalBtn">&times;</button>
             
-            <div id="formContent">
+            <div class="modal-tabs">
+                <button class="modal-tab active" id="tabSignin">Sign In</button>
+                <button class="modal-tab" id="tabSignup">Sign-Up</button>
+            </div>
+
+            <!-- Sign In Form Content -->
+            <div id="signinContent">
                 <div class="modal-header">
-                    <h2>Artist & Business Registration</h2>
-                    <p>Enter your details to initialize your SAMS UPLOADS MEDIA account.</p>
+                    <h2>Welcome Back</h2>
+                    <p>Access your SAMS UPLOADS MEDIA artist dashboard.</p>
                 </div>
-                <form id="artistRegForm">
+                <form id="signinForm">
+                    <div class="form-group">
+                        <label for="signinEmail">Email Address</label>
+                        <input type="email" id="signinEmail" required value="lisotech@yahoo.com" placeholder="Enter your email">
+                    </div>
+                    <div class="form-group">
+                        <label for="signinPassword">Password</label>
+                        <input type="password" id="signinPassword" required placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="form-submit-btn">Sign In to Dashboard</button>
+                </form>
+            </div>
+
+            <!-- Sign Up Form Content -->
+            <div id="signupContent" style="display: none;">
+                <div class="modal-header">
+                    <h2>Artist & Business Sign-Up</h2>
+                    <p>Enter your details to initialize your creator account.</p>
+                </div>
+                <form id="signupForm">
                     <div class="form-group">
                         <label for="fullName">Full Name / Legal Entity</label>
                         <input type="text" id="fullName" required placeholder="e.g. Samson Lisomona">
@@ -499,8 +578,8 @@
                         <input type="text" id="artistName" required placeholder="e.g. Lisotech Sound">
                     </div>
                     <div class="form-group">
-                        <label for="email">Contact Email</label>
-                        <input type="email" id="email" required value="lisotech@yahoo.com">
+                        <label for="signupEmail">Contact Email</label>
+                        <input type="email" id="signupEmail" required value="lisotech@yahoo.com">
                     </div>
                     <div class="form-group">
                         <label for="genre">Primary Genre</label>
@@ -514,13 +593,18 @@
                             <option value="Other">Other</option>
                         </select>
                     </div>
-                    <button type="submit" class="form-submit-btn">Complete Registration</button>
+                    <div class="form-group">
+                        <label for="signupPassword">Create Password</label>
+                        <input type="password" id="signupPassword" required placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="form-submit-btn">Complete Sign-Up</button>
                 </form>
             </div>
 
+            <!-- Success Message State -->
             <div class="success-message" id="successMessage">
-                <h3>Registration Successful! 🎉</h3>
-                <p>Welcome to SAMS UPLOADS MEDIA. Your account credentials and verification link have been dispatched to your designated inbox (<strong id="displayEmail"></strong>).</p>
+                <h3 id="successTitle">Success! 🎉</h3>
+                <p id="successText">Your action was completed successfully. Details have been dispatched to <strong id="displayEmail"></strong>.</p>
             </div>
         </div>
     </div>
@@ -530,47 +614,93 @@
         <p>&copy; 2026 SAMS UPLOADS MEDIA. All rights reserved. Powering Independent Music Worldwide.</p>
     </footer>
 
-    <!-- Interactive Canvas Animation & Form Scripts -->
+    <!-- Interactive Canvas Animation & Auth Scripts -->
     <script>
-        // Modal Functionality
-        const modal = document.getElementById('registrationModal');
-        const openBtn1 = document.getElementById('openModalBtn');
-        const openBtn2 = document.getElementById('heroRegisterBtn');
-        const closeBtn = document.getElementById('closeModalBtn');
-        const regForm = document.getElementById('artistRegForm');
-        const formContent = document.getElementById('formContent');
+        // Modal & Tab Elements
+        const modal = document.getElementById('authModal');
+        const openSigninBtn = document.getElementById('openSigninBtn');
+        const openSignupBtn = document.getElementById('openSignupBtn');
+        const heroSignupBtn = document.getElementById('heroSignupBtn');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        
+        const tabSignin = document.getElementById('tabSignin');
+        const tabSignup = document.getElementById('tabSignup');
+        const signinContent = document.getElementById('signinContent');
+        const signupContent = document.getElementById('signupContent');
+        
+        const signinForm = document.getElementById('signinForm');
+        const signupForm = document.getElementById('signupForm');
         const successMessage = document.getElementById('successMessage');
+        const successTitle = document.getElementById('successTitle');
+        const successText = document.getElementById('successText');
         const displayEmail = document.getElementById('displayEmail');
 
-        function openModal() {
+        function openModal(mode = 'signin') {
             modal.classList.add('active');
+            switchTab(mode);
         }
 
         function closeModal() {
             modal.classList.remove('active');
-            // Reset form view after closing
             setTimeout(() => {
-                formContent.style.display = 'block';
+                signinContent.style.display = 'block';
+                signupContent.style.display = 'none';
                 successMessage.style.display = 'none';
-                regForm.reset();
+                signinForm.reset();
+                signupForm.reset();
             }, 300);
         }
 
-        openBtn1.addEventListener('click', openModal);
-        openBtn2.addEventListener('click', openModal);
-        closeBtn.addEventListener('click', closeModal);
+        function switchTab(mode) {
+            successMessage.style.display = 'none';
+            if (mode === 'signin') {
+                tabSignin.classList.add('active');
+                tabSignup.classList.remove('active');
+                signinContent.style.display = 'block';
+                signupContent.style.display = 'none';
+            } else {
+                tabSignup.classList.add('active');
+                tabSignin.classList.remove('active');
+                signupContent.style.display = 'block';
+                signinContent.style.display = 'none';
+            }
+        }
+
+        openSigninBtn.addEventListener('click', () => openModal('signin'));
+        openSignupBtn.addEventListener('click', () => openModal('signup'));
+        heroSignupBtn.addEventListener('click', () => openModal('signup'));
+        closeModalBtn.addEventListener('click', closeModal);
+        
+        tabSignin.addEventListener('click', () => switchTab('signin'));
+        tabSignup.addEventListener('click', () => switchTab('signup'));
+
         modal.addEventListener('click', (e) => {
             if (e.target === modal) closeModal();
         });
 
-        // Form Submit Handling
-        regForm.addEventListener('submit', (e) => {
+        // Sign In Form Submission
+        signinForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            const emailVal = document.getElementById('email').value;
+            const emailVal = document.getElementById('signinEmail').value;
             displayEmail.textContent = emailVal;
+            successTitle.textContent = "Welcome Back! 🎧";
+            successText.innerHTML = `You have successfully signed in. Redirecting your session...`;
+            
+            signinContent.style.display = 'none';
+            signupContent.style.display = 'none';
+            successMessage.style.display = 'block';
+        });
 
-            // Transition views
-            formContent.style.display = 'none';
+        // Sign Up Form Submission
+        signupForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const emailVal = document.getElementById('signupEmail').value;
+            displayEmail.textContent = emailVal;
+            successTitle.textContent = "Sign-Up Successful! 🎉";
+            successText.innerHTML = `Welcome to SAMS UPLOADS MEDIA. Your account credentials and verification link have been dispatched to your inbox.`;
+            
+            signinContent.style.display = 'none';
+            signupContent.style.display = 'none';
             successMessage.style.display = 'block';
         });
 
@@ -628,7 +758,6 @@
         function animate() {
             ctx.clearRect(0, 0, width, height);
 
-            // Draw connecting lines between close particles
             for (let i = 0; i < particles.length; i++) {
                 particles[i].update();
                 particles[i].draw();
